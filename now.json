@@ -1,6 +1,7 @@
 {
     "version": 2,
     "name": "getcountrycodes.com",
+    "alias": "getcountrycodes.com",
     "builds": [
     	{ "src": "www/public/index.html", "use": "@now/static" },
         { "src": "api/go/*.go", "use": "@now/go" },
