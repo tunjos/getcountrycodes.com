@@ -1,0 +1,12 @@
+{
+    "version": 2,
+    "name": "getcountrycodes.com",
+    "builds": [
+        { "src": "api/go/*.go", "use": "@now/go" },
+        { "src": "api/node/*.js", "use": "@now/node" }
+    ],
+    "routes": [
+        { "src": "/api/(.*)", "dest": "/api/$1" },
+        { "src": "/(.*)", "dest": "/www/public/$1" }
+    ]
+}
