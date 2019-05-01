@@ -1,0 +1,19 @@
+{
+  "name": "getcountrycodes",
+  "version": "1.0.0",
+  "description": "A slick API for country codes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tunjos/getcountrycodes.com.git"
+  },
+  "author": "Tunji Olu-Taiwo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tunjos/getcountrycodes.com/issues"
+  },
+  "homepage": "https://getcountrycodes.com"
+}
