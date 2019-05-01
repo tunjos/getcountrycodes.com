@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/tunjos/getcountrycodes.com/issues"
   },
-  "homepage": "https://getcountrycodes.com"
+  "homepage": "https://getcountrycodes.com",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
 }
