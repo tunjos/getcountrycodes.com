@@ -1,11 +1,15 @@
 const express = require('express')
 const app = express()
 
-app.get('/card', (req, res) => res.send('Hello Card!'))
+app.set('json spaces', 2);
+
+app.get('/country', (req, res) => {
+  res.json({ hello: "country me" });
+})
 
 app.get('*', (req, res) => {
-  console.log("Hello World!");
-  res.json({ hello: "world" });
+  console.log("Hello Country!");
+  res.json({ hello: "country" });
 })
 
 app.all('*', (req, res) => {
@@ -13,5 +17,4 @@ app.all('*', (req, res) => {
   res.status(405).json({ error: 'only POST requests are accepted' })
 })
 
-// app.listen()
 module.exports = app
