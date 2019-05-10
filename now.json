@@ -17,7 +17,7 @@
         { "src": "/api/express/countries/(.*)", "methods": ["GET"], "dest": "/api/express/index.js" },
         { "src": "/api/(.*)", "methods": ["GET"], "dest": "/api/$1" },
         { "src": "/docs", "dest": "/www/public/docs/index.html" },
-        { "src": "/docs/(.*)", "dest": "/www/public/docs/$1" },
+        { "src": "/(.*)", "dest": "/www/public/docs/$1" },
         { "src": "/", "dest": "/www/public/index.html" }
     ]
 }
