@@ -1,0 +1,14 @@
+{
+  "italy": {
+    "country": "Italy",
+    "country_code": "+39",
+    "iso2": "IT",
+    "iso3": "ITA"
+  },
+  "united states": {
+    "country": "United States",
+    "country_code": "+1",
+    "iso2": "US",
+    "iso3": "USA"
+  }
+}

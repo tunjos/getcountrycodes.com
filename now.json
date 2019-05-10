@@ -3,12 +3,15 @@
     "name": "getcountrycodes.com",
     "alias": "getcountrycodes.com",
     "builds": [
-    	{ "src": "www/public/index.html", "use": "@now/static" },
+    	  { "src": "www/public/index.html", "use": "@now/static" },
+        { "src": "api/countries.json", "use": "@now/static" },
         { "src": "api/go/*.go", "use": "@now/go" },
         { "src": "api/express/**/*.js", "use": "@now/node" }
     ],
     "routes": [
-        { "src": "/api/(.*)", "dest": "/api/$1" },
+        { "src": "/api/express/countries", "methods": ["GET"], "dest": "/api/express/index.js" },
+        { "src": "/api/express/countries/(.*)", "methods": ["GET"], "dest": "/api/express/index.js" },
+        { "src": "/api/(.*)", "methods": ["GET"], "dest": "/api/$1" },
         { "src": "/(.*)", "dest": "/www/public/index.html" }
     ]
 }
