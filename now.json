@@ -4,7 +4,7 @@
     "alias": "getcountrycodes.com",
     "github": {
       "silent": true
-    }
+    },
     "builds": [
     	  { "src": "www/public/index.html", "use": "@now/static" },
         { "src": "www/public/docs/build.sh", "use": "@now/static-build", "config": { "distDir": "_site" } },
