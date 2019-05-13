@@ -5,11 +5,11 @@ parameters:
   - name:
     content:
 content_markdown: |-
-  Welcome to our API.
+  Welcome to the GetCountryCodes API documentation.
 
-  This API document is designed for those interested in developing for our platform.
+  This API document is designed for those interested in using the API.
 
-  This API is still under development and will evolve.
+  We hope you enjoy calling the available endpoints.
 
   You'll succeed if you do this.
   {: .success }
