@@ -22,6 +22,8 @@ content_markdown: |-
 
   Something bad will happen if you do this.
   {: .error }
+  ```Base URL: https://getcountrycodes.com/api```
+  {: .info }
 left_code_blocks:
   - code_block:
     title:
