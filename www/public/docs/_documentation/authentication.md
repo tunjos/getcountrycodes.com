@@ -20,6 +20,12 @@ left_code_blocks:
     language:
 right_code_blocks:
   - code_block: |-
+      echo -n '<API_KEY>:X' | openssl base64
+
+      curl -H "Authorization: Bearer <token>" https://getcountrycodes.com/api/countries/
+    title: cURL
+    language: bash
+  - code_block: |-
       const axios = require('axios')
 
       var token = Buffer.from("<API_KEY>" + ":X").toString('base64')
@@ -34,12 +40,6 @@ right_code_blocks:
         })
     title: Node.js
     language: javascript
-  - code_block: |-
-      echo -n '<API_KEY>:X' | openssl base64
-
-      curl -H "Authorization: Bearer <token>" https://getcountrycodes.com/api/countries/
-    title: cURL
-    language: bash
   - code_block: |-
       var token = btoa('<API_KEY>:X');
 
