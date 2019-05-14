@@ -25,7 +25,11 @@ app.get('*', (req, res) => {
   var countries = loadJsonFile.sync(countriesJson)
 
   if (country == '' || country == 'undefined') {
-    res.json(countries)
+    var countriesKeys = Object.keys(countries)
+    var countriesJsonArray = [];
+    for (var key in countriesKeys)
+      countriesJsonArray.push(countries[countriesKeys[key]])
+    res.json(countriesJsonArray)
   } else if (countries.hasOwnProperty(country)) {
     countryJson = countries[country]
     if (countryJson.hasOwnProperty(detail)) {
