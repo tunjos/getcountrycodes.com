@@ -17,6 +17,7 @@
   },
   "homepage": "https://getcountrycodes.com",
   "dependencies": {
+    "aws-sdk": "^2.454.0",
     "express": "^4.16.4",
     "load-json-file": "^6.0.0"
   }
