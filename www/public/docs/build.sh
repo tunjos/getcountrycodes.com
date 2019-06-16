@@ -6,4 +6,4 @@ gem install bundler --version=2.0.1
 
 bundle install
 
-jekyll build
+bundle exec jekyll build
