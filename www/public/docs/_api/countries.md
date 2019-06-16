@@ -103,27 +103,37 @@ right_code_blocks:
       [
         {
           "country": "Italy",
+          "country_official": "Italian Republic",
           "calling_code": "+39",
           "capital": "Rome",
           "continent": "Europe",
           "continent_iso2": "EU",
           "country_iso2": "IT",
           "country_iso3": "ITA",
+          "country_iso3_num": "380",
           "currency_iso3": "EUR",
           "currency_name": "Euro",
-          "currency_symbol": "€"
+          "currency_unit": "Euro",
+          "currency_symbol": "€",
+          "currency_subunit": "cent",
+          "region": "Southern Europe"
         },
         {
-          "country": "Jamaica",
-          "calling_code": "+1",
-          "capital": "Kingston",
-          "continent": "North America",
-          "continent_iso2": "NA",
-          "country_iso2": "JM",
-          "country_iso3": "JAM",
-          "currency_iso3": "JMD",
-          "currency_name": "Jamaican Dollar",
-          "currency_symbol": "$"
+          "country": "Côte d’Ivoire",
+          "country_official": "Republic of Côte d'Ivoire",
+          "calling_code": "+225",
+          "capital": "Yamoussoukro",
+          "continent": "Africa",
+          "continent_iso2": "AF",
+          "country_iso2": "CI",
+          "country_iso3": "CIV",
+          "country_iso3_num": "384",
+          "currency_iso3": "XOF",
+          "currency_name": "West African CFA franc",
+          "currency_unit": "Franc",
+          "currency_symbol": "CFA",
+          "currency_subunit": "centime",
+          "region": "Western Africa"
         }
       ]
     title: Response

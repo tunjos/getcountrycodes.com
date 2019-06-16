@@ -99,15 +99,20 @@ right_code_blocks:
   - code_block: |2-
       {
         "country": "Italy",
+        "country_official": "Italian Republic",
         "calling_code": "+39",
         "capital": "Rome",
         "continent": "Europe",
         "continent_iso2": "EU",
         "country_iso2": "IT",
         "country_iso3": "ITA",
+        "country_iso3_num": "380",
         "currency_iso3": "EUR",
         "currency_name": "Euro",
-        "currency_symbol": "€"
+        "currency_unit": "Euro",
+        "currency_symbol": "€",
+        "currency_subunit": "cent",
+        region": "Southern Europe"
       }
     title: Response
     language: json
