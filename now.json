@@ -10,7 +10,7 @@
         { "src": "www/public/docs/build.sh", "use": "@now/static-build", "config": { "distDir": "_site" } },
         { "src": "api/countries.json", "use": "@now/static" },
         { "src": "api/go/*.go", "use": "@now/go" },
-        { "src": "api/express/**/*.js", "use": "@now/node" }
+        { "src": "api/express/**/*.js", "use": "@now/node@canary" }
     ],
     "routes": [
         { "src": "/api/countries", "methods": ["GET"], "dest": "/api/express/index.js" },
