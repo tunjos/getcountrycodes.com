@@ -2,19 +2,24 @@ const express = require('express')
 const loadJsonFile = require('load-json-file');
 const url = require('url')
 const path = require('path');
+const dynamoDB = require('./lib/dynamoDB');
 
-const app = express()
+const app = express();
 
 app.set('json spaces', 2);
 
 app.get('*', (req, res) => {
 
   var authorizationHeader = req.header("Authorization")
-  var token =  authorizationHeader.replace('Bearer ', '')
+//TEST
+  var token
+  if (authorizationHeader !== undefined) {
+    token = authorizationHeader.replace('Bearer ', '')
 
   console.log("Url: " + req.url);
 
-  var country = req.url.split('/')[3].toLowerCase();
+//Store in variable and check for nullity, as toLowerCase called on a null object
+  var country = req.url.split('/')[3]. toLowerCase called on a null object();
   var country = decodeURIComponent(country)
   console.log("Country: " + country);
 
@@ -31,21 +36,26 @@ app.get('*', (req, res) => {
       countriesJsonArray.push(countries[countriesKeys[key]])
     res.json(countriesJsonArray)
   } else if (countries.hasOwnProperty(country)) {
+    console.log("Gets Here: ");
     countryJson = countries[country]
     if (countryJson.hasOwnProperty(detail)) {
       res.json({
         detail: countryJson[detail]
       })
-    } else if (detail == '' || detail == 'undefined') {
+    } else if (detail == '' || detail === undefined) {
       res.json(countries[country])
     } else {
       res.status(400).json({
-        error: 'Invalid Country/Detail specified'
+        error: true,
+        error_code: 1,
+        message: 'Invalid Country detail specified'
       })
     }
   } else {
     res.status(400).json({
-      error: 'Invalid Country specified'
+      error: true,
+      error_code: 1,
+      message: 'Country not found'
     })
   }
 })
