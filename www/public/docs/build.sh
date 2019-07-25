@@ -7,3 +7,5 @@ gem install bundler --no-ri --no-rdoc --version=2.0.1
 bundle install
 
 jekyll build
+
+mv _site public
