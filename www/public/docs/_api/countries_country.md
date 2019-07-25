@@ -112,7 +112,7 @@ right_code_blocks:
         "currency_unit": "Euro",
         "currency_symbol": "€",
         "currency_subunit": "cent",
-        region": "Southern Europe"
+        "region": "Southern Europe"
       }
     title: Response
     language: json
