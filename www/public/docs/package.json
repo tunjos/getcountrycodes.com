@@ -1,7 +1,7 @@
 {
- 
+
   "scripts": {
-    "now-build": "bundle exec jekyll build",
+    "now-build": "bundle exec jekyll build && mv _site public",
     "now-dev": "bundle exec jekyll serve"
   }
 }
