@@ -9,7 +9,8 @@
     	  { "src": "www/public/index.html", "use": "@now/static" },
         { "src": "www/public/docs/build.sh", "use": "@now/static-build", "config": { "distDir": "_site" } },
         { "src": "api/countries.json", "use": "@now/static" },
-        { "src": "www/public/gcc/dist/*", "use": "@now/static" },
+        { "src": "www/public/gcc/package.json", "use": "@now/static-build" },
+        { "src": "www/public/gcc/dist/**", "use": "@now/static" },
         { "src": "api/go/*.go", "use": "@now/go" },
         { "src": "api/express/**/*.js", "use": "@now/node@canary" }
     ],
