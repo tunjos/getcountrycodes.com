@@ -18,7 +18,9 @@
   "homepage": "https://getcountrycodes.com",
   "dependencies": {
     "aws-sdk": "^2.454.0",
+    "bson-ext": "^2.0.2",
     "express": "^4.16.4",
-    "load-json-file": "^6.0.0"
+    "load-json-file": "^6.0.0",
+    "mongodb": "^3.2.7"
   }
 }
