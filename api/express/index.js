@@ -26,7 +26,7 @@ app.get('*', (req, res) => {
   console.log("Url: " + req.url);
 
 //Store in variable and check for nullity, as toLowerCase called on a null object
-  var country = req.url.split('/')[3]. toLowerCase called on a null object();
+  var country = req.url.split('/')[3].toLowerCase();
   var country = decodeURIComponent(country)
   console.log("Country: " + country);
 
