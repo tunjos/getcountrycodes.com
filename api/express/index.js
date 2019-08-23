@@ -2,13 +2,20 @@ const express = require('express')
 const loadJsonFile = require('load-json-file');
 const url = require('url')
 const path = require('path');
-const dynamoDB = require('./lib/dynamoDB');
+const MongoDB = require('./lib/MongoDB');
 
 const app = express();
 
 app.set('json spaces', 2);
 
 app.get('*', (req, res) => {
+
+  const db = await MongoDB.connectToDatabase()
+  const collection = db.collection("Users");
+  collection.find({}).limit(2).toArray(function(err, docs) {
+      console.log(docs);
+      client.close();
+    });
 
   var authorizationHeader = req.header("Authorization")
 //TEST

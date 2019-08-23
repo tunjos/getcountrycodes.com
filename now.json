@@ -5,6 +5,9 @@
     "github": {
       "silent": true
     },
+    "env": {
+      "GCC_MONGODB_URI": "@gcc-mongodb-uri"
+    },
     "builds": [
     	  { "src": "www/public/index.html", "use": "@now/static" },
         { "src": "www/public/docs/build.sh", "use": "@now/static-build", "config": { "distDir": "_site" } },
