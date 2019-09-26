@@ -68,6 +68,11 @@ Check out the live [documentation](https://getcountrycodes.com/docs)
 }
 ```
 
+### Environments
+- `Production
+- `Staging`
+- `Local`
+
 ### Available Endpoints
 - `/countries`
 - `/countries/country`
@@ -75,3 +80,5 @@ Check out the live [documentation](https://getcountrycodes.com/docs)
 - `/login`
 - `/logout`
 - `/usage`
+
+API Key required

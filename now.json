@@ -18,6 +18,10 @@
         { "src": "api/express/**/*.js", "use": "@now/node@canary" }
     ],
     "routes": [
+        { "src": "/api/login", "methods": ["POST"], "dest": "/api/express/login/index.js" },
+        { "src": "/api/login/", "methods": ["POST"], "dest": "/api/express/login/index.js" },
+        { "src": "/api/register", "methods": ["POST"], "dest": "/api/express/register/index.js" },
+        { "src": "/api/register/", "methods": ["POST"], "dest": "/api/express/register/index.js" },
         { "src": "/api/countries", "methods": ["GET"], "dest": "/api/express/index.js" },
         { "src": "/api/countries/(.*)", "methods": ["GET"], "dest": "/api/express/index.js" },
         { "src": "/api/(.*)", "methods": ["GET"], "dest": "/api/$1" },

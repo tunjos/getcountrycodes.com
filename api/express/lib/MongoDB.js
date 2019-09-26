@@ -1,29 +1,46 @@
-const MongoClient = require('mongodb').MongoClient;
+const MongoClient = require("mongodb").MongoClient;
 
-let cachedDb = null
+let cachedDb = null;
 
 async function connectToDatabase() {
+  console.log("Start: connectToDatabase");
+
   if (cachedDb) {
-    return cachedDb
+    return cachedDb;
   }
 
-  const client = await MongoClient.connect(process.env.GCC_MONGODB_URI, { useNewUrlParser: true })
-  const db = await client.db()
+  let db;
+  try {
+    const client = await MongoClient.connect(process.env.GCC_MONGODB_URI, {
+      useNewUrlParser: true
+    }).catch(err => {
+      console.log(err);
+    });
 
-  cachedDb = db
-  return db
+    db = client.db();
+    cachedDb = db;
+  } catch (err) {
+    console.log(err);
+  }
+
+  console.log("End: connectToDatabase");
+  return db;
 }
+
+async function closeDatabaseConnection() {}
 
 // The implememntation above hides the error
 // const client = new MongoClient(uri, { useNewUrlParser: true });
 // client.connect(err => {
-  // const collection = client.db().collection("Users");
-  // collection.find({}).limit(2).toArray(function(err, docs) {
-      // console.log(docs);
-      // client.close();
-    // });
-  // perform actions on the collection object
-  // client.close();
+// const collection = client.db().collection("Users");
+// collection.find({}).limit(2).toArray(function(err, docs) {
+// console.log(docs);
+// client.close();
+// });
+// perform actions on the collection object
+// client.close();
 // });
 
-module.exports = connectToDatabase()
+module.exports = {
+  connectToDatabase: connectToDatabase
+};
