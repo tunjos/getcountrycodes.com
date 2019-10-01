@@ -69,7 +69,7 @@ Check out the live [documentation](https://getcountrycodes.com/docs)
 ```
 
 ### Environments
-- `Production
+- `Production`
 - `Staging`
 - `Local`
 
