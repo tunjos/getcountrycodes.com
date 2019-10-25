@@ -7,6 +7,30 @@ function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+function isValidPassword(password) {
+  // Greater than or equal to 6 character
+  if (password.length < 6) {
+    return false;
+  }
+  // Contains an uppercase character
+  if (!(/[A-Z]/.test(password))) {
+    return false;
+  }
+  // Contains a lowercase character
+  if (!(/[a-z]/.test(password))) {
+    return false;
+  }
+  // Contains a number
+  if (!(/\d/.test(password))) {
+    return false;
+  }
+  // Contains special characters
+
+  // Does not contain any char from name/surname
+
+  return true;
+}
+
 function isAuthTokenPresent(req) {
   var authorizationHeader = req.header("Authorization");
 
@@ -14,10 +38,14 @@ function isAuthTokenPresent(req) {
     return false;
   }
 
-  var token = authorizationHeader.replace('Bearer ', '')
+  if (!authorizationHeader.includes("Bearer")) {
+    return false;
+  }
 }
 
 module.exports = {
   isValuePresent: isValuePresent,
-  isValidEmail: isValidEmail
+  isValidEmail: isValidEmail,
+  isValidPassword: isValidPassword,
+  isAuthTokenPresent: isAuthTokenPresent
 };
