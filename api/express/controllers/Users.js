@@ -1,8 +1,6 @@
 const crypto = require("crypto");
 
 const MongoDB = require("../lib/MongoDB");
-const GCC = require("../lib/GCC");
-//Todo: Rename to ApiResponse
 const Collections = require("../lib/Collections");
 
 async function findUserLogin(email) {
