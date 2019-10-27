@@ -29,6 +29,7 @@ Check out the live [documentation](https://getcountrycodes.com/docs)
   "wordpass": "password",
   "sugar": "salt",
   "usage": {
+    "total": 0, 
     "/countries": 0,
     "/countries/country": 0,
     "/countries/country/country": 0,
