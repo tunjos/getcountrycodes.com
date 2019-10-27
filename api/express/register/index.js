@@ -3,7 +3,7 @@ const asyncMiddleware = require("../lib/asyncMiddleware");
 const url = require("url");
 const path = require("path");
 const MongoDB = require("../lib/MongoDB");
-const GCC = require("../lib/GCC");
+const ApiResponse = require("../lib/ApiResponse");
 const Validators = require("../lib/Validators");
 const Collections = require("../lib/Collections");
 const crypto = require("crypto");
@@ -26,15 +26,15 @@ app.post(
     var password = req.body.password;
 
     if (!Validators.isValuePresent(email)) {
-      res.status(400).json(GCC.getFailure(0, "Email not provided"));
+      res.status(400).json(ApiResponse.getFailure(0, "Email not provided"));
     }
 
     if (!Validators.isValidEmail(email)) {
-      res.status(400).json(GCC.getFailure(0, "Invalid email provided"));
+      res.status(400).json(ApiResponse.getFailure(0, "Invalid email provided"));
     }
 
     if (!Validators.isValidPassword(password)) {
-      res.status(400).json(GCC.getFailure(0, "Invalid password provided"));
+      res.status(400).json(ApiResponse.getFailure(0, "Invalid password provided"));
     }
 
     const collectionUser = db.collection(Collections.Users);
@@ -51,7 +51,7 @@ app.post(
       )
       .then(docs => {
         if (Validators.isValuePresent(docs)) {
-          res.status(400).json(GCC.getFailure(0, "Email already registered"));
+          res.status(400).json(ApiResponse.getFailure(0, "Email already registered"));
         } else {
           // Extract to PasswordUtils
           const salt = crypto.randomBytes(16).toString("hex");
@@ -90,7 +90,7 @@ app.post(
           res
             .status(400)
             .json(
-              GCC.getSuccess(
+              ApiResponse.getSuccess(
                 "Account created successfully. Please check your email."
               )
             );
@@ -103,7 +103,7 @@ app.post(
 );
 
 app.all("*", (req, res) => {
-  res.status(405).json(GCC.getFailurePostOnly());
+  res.status(405).json(ApiResponse.getFailurePostOnly());
 });
 
 module.exports = app;

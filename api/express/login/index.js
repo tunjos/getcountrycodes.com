@@ -6,7 +6,7 @@ const url = require("url");
 const path = require("path");
 
 const asyncMiddleware = require("../lib/asyncMiddleware");
-const GCC = require("../lib/GCC");
+const ApiResponse = require("../lib/ApiResponse");
 const Validators = require("../lib/Validators");
 const Collections = require("../lib/Collections");
 
@@ -51,21 +51,21 @@ app.post(
     var password = req.body.password;
 
     if (!Validators.isValuePresent(email)) {
-      res.status(400).json(GCC.getFailure(0, "Email not provided"));
+      res.status(400).json(ApiResponse.getFailure(0, "Email not provided"));
     }
 
     if (!Validators.isValidEmail(email)) {
-      res.status(400).json(GCC.getFailure(0, "Invalid email provided"));
+      res.status(400).json(ApiResponse.getFailure(0, "Invalid email provided"));
     }
 
     if (!Validators.isValidPassword(password)) {
-      res.status(400).json(GCC.getFailure(0, "Invalid password provided"));
+      res.status(400).json(ApiResponse.getFailure(0, "Invalid password provided"));
     }
 
     Users.findUserLogin(email)
       .then(docs => {
         if (!Validators.isValuePresent(docs)) {
-          res.status(400).json(GCC.getFailure(0, "User not found"));
+          res.status(400).json(ApiResponse.getFailure(0, "User not found"));
         }
 
         if (Users.validatePassword(password, docs.salt, docs.password)) {
@@ -86,7 +86,7 @@ app.post(
           Sessions.createSession(req, res, ip, docs.hash_id);
           res.json("Login successful " + req.session.hits);
         } else {
-          res.status(400).json(GCC.getFailure(0, "Invalid password provided"));
+          res.status(400).json(ApiResponse.getFailure(0, "Invalid password provided"));
         }
       })
       .catch(err => {
@@ -96,7 +96,7 @@ app.post(
 );
 
 app.all("*", (req, res) => {
-  res.status(405).json(GCC.getFailurePostOnly());
+  res.status(405).json(ApiResponse.getFailurePostOnly());
 });
 
 module.exports = app;
