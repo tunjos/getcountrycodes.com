@@ -1,53 +1,102 @@
-const express = require('express');
-const asyncMiddleware = require('../lib/asyncMiddleware');
-const url = require('url')
-const path = require('path');
-const MongoDB = require('../lib/MongoDB');
-const GCC = require('../lib/GCC');
-const Validators = require('../lib/Validators');
-const Collections = require('../lib/Collections');
+const express = require("express");
+const session = require("express-session");
+const useragent = require("express-useragent");
+const MongoDBStore = require("connect-mongodb-session")(session);
+const url = require("url");
+const path = require("path");
+
+const asyncMiddleware = require("../lib/asyncMiddleware");
+const GCC = require("../lib/GCC");
+const Validators = require("../lib/Validators");
+const Collections = require("../lib/Collections");
+
+const Users = require("../controllers/Users");
+const Sessions = require("../controllers/Sessions");
 
 const app = express();
-app.use(express.urlencoded({
-  extended: false
-}));
 
-app.set('json spaces', 2);
+app.set("json spaces", 2);
+app.use(
+  express.urlencoded({
+    extended: false
+  })
+);
+app.use(useragent.express());
 
-app.post('*', asyncMiddleware(async (req, res) => {
-  const db = await MongoDB.connectToDatabase();
+var store = new MongoDBStore({
+  uri: process.env.GCC_MONGODB_URI,
+  collection: Collections.Sessions
+});
+store.on("error", function(error) {
+  console.log(error);
+});
 
-  var email = req.body.email;
+app.use(
+  session({
+    secret: "secret_value",
+    name: "gcc.sid",
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+    },
+    store: store,
+    resave: false,
+    saveUninitialized: false
+  })
+);
 
-  if (!Validators.isValuePresent(email)) {
-    res.status(400).json(GCC.getFailure(0, "Email not provided"));
-  }
+app.post(
+  "*",
+  asyncMiddleware(async (req, res) => {
+    var email = req.body.email;
+    var password = req.body.password;
 
-  if (!Validators.isValidEmail(email)) {
-    res.status(400).json(GCC.getFailure(0, "Invalid email provided"));
-  }
+    if (!Validators.isValuePresent(email)) {
+      res.status(400).json(GCC.getFailure(0, "Email not provided"));
+    }
 
-  const collection = db.collection(Collections.Users);
-  collection.findOne({
-      email: email
-    }, {
-      projection: {
-        email: 1,
-        password: 1,
-        salt: 1
-      }
-    })
-    .then(docs => {
-      // Validate Password
-      res.json(docs);
-    })
-    .catch(err => {
-      console.log(err);
-    });
-}));
+    if (!Validators.isValidEmail(email)) {
+      res.status(400).json(GCC.getFailure(0, "Invalid email provided"));
+    }
 
-app.all('*', (req, res) => {
+    if (!Validators.isValidPassword(password)) {
+      res.status(400).json(GCC.getFailure(0, "Invalid password provided"));
+    }
+
+    Users.findUserLogin(email)
+      .then(docs => {
+        if (!Validators.isValuePresent(docs)) {
+          res.status(400).json(GCC.getFailure(0, "User not found"));
+        }
+
+        if (Users.validatePassword(password, docs.salt, docs.password)) {
+          var ip =
+            req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+
+          var device = req.useragent.browser + " - " + req.useragent.platform;
+          Users.updateLoginHistory(
+            email,
+            ip,
+            "Berlin, Germany",
+            device,
+            req.useragent.os,
+            new Date(),
+            docs.login_history.length
+          );
+
+          Sessions.createSession(req, res, ip, docs.hash_id);
+          res.json("Login successful " + req.session.hits);
+        } else {
+          res.status(400).json(GCC.getFailure(0, "Invalid password provided"));
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  })
+);
+
+app.all("*", (req, res) => {
   res.status(405).json(GCC.getFailurePostOnly());
 });
 
-module.exports = app
+module.exports = app;
