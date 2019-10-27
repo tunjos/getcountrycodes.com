@@ -15,7 +15,9 @@ const Sessions = require("../controllers/Sessions");
 
 const app = express();
 
+app.disable('x-powered-by');
 app.set("json spaces", 2);
+
 app.use(
   express.urlencoded({
     extended: false

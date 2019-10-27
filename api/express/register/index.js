@@ -15,6 +15,7 @@ app.use(
   })
 );
 
+app.disable('x-powered-by');
 app.set("json spaces", 2);
 
 app.post(
