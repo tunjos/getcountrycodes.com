@@ -34,11 +34,25 @@ function validatePassword(password, salt, passwordHash) {
   return false;
 }
 
+function verifyUser(token) {
+  //Create API key
+  //Init usage object
+  return false;
+}
+
 function findUserMe(email) {
   return false;
 }
 
-async function updateLoginHistory(email, ip, location, device, os, date, loginHistoryLength) {
+async function updateLoginHistory(
+  email,
+  ip,
+  location,
+  device,
+  os,
+  date,
+  loginHistoryLength
+) {
   // Update login_history Array with max 5 objects
   const db = await MongoDB.connectToDatabase();
 
@@ -52,18 +66,29 @@ async function updateLoginHistory(email, ip, location, device, os, date, loginHi
     date: date
   };
 
-  return collectionUser.updateOne(
-    { email: email },
-    { $push: { login_history: login_history } }
-  ).then( result => {
-    if (loginHistoryLength > 5) {
-      collectionUser.updateOne(
+  try {
+    if (loginHistoryLength >= 5) {
+      var result2 = await collectionUser.updateOne(
         { email: email },
         { $pop: { login_history: -1 } }
       );
     }
+  } catch (e) {
+    console.log(err);
+    return false;
   }
-  )
+
+  try {
+    var result = await collectionUser.updateOne(
+      { email: email },
+      { $push: { login_history: login_history } }
+    );
+    return true;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+  return false;
 }
 
 function createUser(email) {
@@ -73,6 +98,7 @@ function createUser(email) {
 module.exports = {
   findUserLogin: findUserLogin,
   validatePassword: validatePassword,
+  verifyUser: verifyUser,
   findUserMe: findUserMe,
   updateLoginHistory: updateLoginHistory,
   createUser: createUser

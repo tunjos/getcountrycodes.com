@@ -15,7 +15,7 @@ const Sessions = require("../controllers/Sessions");
 
 const app = express();
 
-app.disable('x-powered-by');
+app.disable("x-powered-by");
 app.set("json spaces", 2);
 
 app.use(
@@ -61,7 +61,9 @@ app.post(
     }
 
     if (!Validators.isValidPassword(password)) {
-      res.status(400).json(ApiResponse.getFailure(0, "Invalid password provided"));
+      res
+        .status(400)
+        .json(ApiResponse.getFailure(0, "Invalid password provided"));
     }
 
     Users.findUserLogin(email)
@@ -75,6 +77,7 @@ app.post(
             req.headers["x-forwarded-for"] || req.connection.remoteAddress;
 
           var device = req.useragent.browser + " - " + req.useragent.platform;
+
           Users.updateLoginHistory(
             email,
             ip,
@@ -86,9 +89,22 @@ app.post(
           );
 
           Sessions.createSession(req, res, ip, docs.hash_id);
-          res.json("Login successful " + req.session.hits);
+
+          var loginResponse = {
+            error: false,
+            error_code: 0,
+            message: "Login successful",
+            user: {
+              user_id: "1",
+              hash_id: docs.hash_id,
+              email: docs.email
+            }
+          };
+          res.status(200).json(loginResponse);
         } else {
-          res.status(400).json(ApiResponse.getFailure(0, "Invalid password provided"));
+          res
+            .status(400)
+            .json(ApiResponse.getFailure(0, "Invalid password provided"));
         }
       })
       .catch(err => {
