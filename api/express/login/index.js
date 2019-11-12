@@ -17,7 +17,7 @@ const app = express();
 
 app.disable("x-powered-by");
 app.set("json spaces", 2);
-
+app.use(express.json());
 app.use(
   express.urlencoded({
     extended: false
@@ -54,28 +54,31 @@ app.post(
 
     if (!Validators.isValuePresent(email)) {
       res.status(400).json(ApiResponse.getFailure(0, "Email not provided"));
+      return;
     }
 
     if (!Validators.isValidEmail(email)) {
       res.status(400).json(ApiResponse.getFailure(0, "Invalid email provided"));
+      return;
     }
 
     if (!Validators.isValidPassword(password)) {
       res
         .status(400)
         .json(ApiResponse.getFailure(0, "Invalid password provided"));
+        return;
     }
 
     Users.findUserLogin(email)
       .then(docs => {
         if (!Validators.isValuePresent(docs)) {
           res.status(400).json(ApiResponse.getFailure(0, "User not found"));
+          return;
         }
-
+        
         if (Users.validatePassword(password, docs.salt, docs.password)) {
           var ip =
             req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-
           var device = req.useragent.browser + " - " + req.useragent.platform;
 
           Users.updateLoginHistory(
@@ -86,25 +89,36 @@ app.post(
             req.useragent.os,
             new Date(),
             docs.login_history.length
-          );
+          ).then(result => {
+            if (result) {
+              console.log(result);
 
-          Sessions.createSession(req, res, ip, docs.hash_id);
+              Sessions.createSession(req, res, ip, docs.hash_id);
 
-          var loginResponse = {
-            error: false,
-            error_code: 0,
-            message: "Login successful",
-            user: {
-              user_id: "1",
-              hash_id: docs.hash_id,
-              email: docs.email
+              var loginResponse = {
+                error: false,
+                error_code: 0,
+                message: "Login successful",
+                user: {
+                  user_id: "1",
+                  hash_id: docs.hash_id,
+                  email: docs.email
+                }
+              };
+              res.status(200).json(loginResponse);
+              return;
+            } else {
+              res
+                .status(400)
+                .json(ApiResponse.getFailure(0, "Login failure"));
+                return;
             }
-          };
-          res.status(200).json(loginResponse);
+          });
         } else {
           res
             .status(400)
             .json(ApiResponse.getFailure(0, "Invalid password provided"));
+            return;
         }
       })
       .catch(err => {

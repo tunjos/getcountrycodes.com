@@ -6,7 +6,8 @@
       "silent": true
     },
     "env": {
-      "GCC_MONGODB_URI": "@gcc-mongodb-uri"
+      "GCC_MONGODB_URI": "@gcc-mongodb-uri",
+      "GCC_HOST": "https://getcountrycodes.com"
     },
     "builds": [
     	  { "src": "www/public/index.html", "use": "@now/static" },
