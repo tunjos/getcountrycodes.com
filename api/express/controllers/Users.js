@@ -34,9 +34,46 @@ function validatePassword(password, salt, passwordHash) {
   return false;
 }
 
-function verifyUser(token) {
+async function findVerifyToken(token) {
+  const db = await MongoDB.connectToDatabase();
+
+  const userCollection = db.collection(Collections.Users);
+
+  return userCollection.findOne(
+    {
+      verify_token: token
+    },
+    {
+      projection: {
+        verified: 1,
+        verify_token: 1,
+        verify_token_expiry: 1
+      }
+    }
+  );
   //Create API key
   //Init usage object
+}
+
+async function verifyAccount(token) {
+  const db = await MongoDB.connectToDatabase();
+
+  const userCollection = db.collection(Collections.Users);
+
+  try {
+    const { matchedCount, modifiedCount } = await userCollection.updateOne(
+      { verify_token: token },
+      { $set: { active: true, verified: true } }
+    );
+
+    if (matchedCount && modifiedCount) {
+      return true;
+    }
+    console.log(result);
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
   return false;
 }
 
@@ -73,7 +110,7 @@ async function updateLoginHistory(
         { $pop: { login_history: -1 } }
       );
     }
-  } catch (e) {
+  } catch (err) {
     console.log(err);
     return false;
   }
@@ -98,7 +135,8 @@ function createUser(email) {
 module.exports = {
   findUserLogin: findUserLogin,
   validatePassword: validatePassword,
-  verifyUser: verifyUser,
+  findVerifyToken: findVerifyToken,
+  verifyAccount: verifyAccount,
   findUserMe: findUserMe,
   updateLoginHistory: updateLoginHistory,
   createUser: createUser

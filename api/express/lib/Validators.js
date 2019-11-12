@@ -13,15 +13,15 @@ function isValidPassword(password) {
     return false;
   }
   // Contains an uppercase character
-  if (!(/[A-Z]/.test(password))) {
+  if (!/[A-Z]/.test(password)) {
     return false;
   }
   // Contains a lowercase character
-  if (!(/[a-z]/.test(password))) {
+  if (!/[a-z]/.test(password)) {
     return false;
   }
   // Contains a number
-  if (!(/\d/.test(password))) {
+  if (!/\d/.test(password)) {
     return false;
   }
   // Contains special characters
@@ -43,9 +43,22 @@ function isAuthTokenPresent(req) {
   }
 }
 
+function isValidVerifyToken(token) {
+  if (!isValuePresent(token)) {
+    return false;
+  }
+
+  if (token.length == 64) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 module.exports = {
   isValuePresent: isValuePresent,
   isValidEmail: isValidEmail,
   isValidPassword: isValidPassword,
-  isAuthTokenPresent: isAuthTokenPresent
+  isAuthTokenPresent: isAuthTokenPresent,
+  isValidVerifyToken: isValidVerifyToken
 };

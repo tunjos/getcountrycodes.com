@@ -26,6 +26,11 @@ export default new Router({
       component: () => import("@/views/Dashboard")
     },
     {
+      path: "/verify/:token",
+      name: "verify",
+      component: () => import("@/views/Verify")
+    },
+    {
       path: "/about",
       name: "about",
       // route level code-splitting
