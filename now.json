@@ -7,7 +7,8 @@
     },
     "env": {
       "GCC_MONGODB_URI": "@gcc-mongodb-uri",
-      "GCC_HOST": "https://getcountrycodes.com"
+      "GCC_HOST": "https://getcountrycodes.com",
+      "SMART_IP_API_KEY": "@smart-ip-api-key"
     },
     "builds": [
     	  { "src": "www/public/index.html", "use": "@now/static" },

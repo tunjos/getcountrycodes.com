@@ -9,6 +9,7 @@ const asyncMiddleware = require("../lib/asyncMiddleware");
 const ApiResponse = require("../lib/ApiResponse");
 const Validators = require("../lib/Validators");
 const Collections = require("../lib/Collections");
+const IpGeolocation = require("../lib/IpGeolocation");
 
 const Users = require("../controllers/Users");
 const Sessions = require("../controllers/Sessions");
@@ -66,62 +67,106 @@ app.post(
       res
         .status(400)
         .json(ApiResponse.getFailure(0, "Invalid password provided"));
-        return;
+      return;
     }
 
     Users.findUserLogin(email)
       .then(docs => {
         if (!Validators.isValuePresent(docs)) {
-          res.status(400).json(ApiResponse.getFailure(0, "User not found"));
+          res.status(400).json(ApiResponse.getFailure(0, "Account not found"));
           return;
         }
-        
+
+        if (!docs.active) {
+          res.status(400).json(ApiResponse.getFailure(0, "Account inactive"));
+          return;
+        }
+
         if (Users.validatePassword(password, docs.salt, docs.password)) {
           var ip =
             req.headers["x-forwarded-for"] || req.connection.remoteAddress;
           var device = req.useragent.browser + " - " + req.useragent.platform;
+          var login_history_length = 0;
+          if (docs.login_history) {
+            login_history_length = docs.login_history.length;
+          }
 
-          Users.updateLoginHistory(
-            email,
-            ip,
-            "Berlin, Germany",
-            device,
-            req.useragent.os,
-            new Date(),
-            docs.login_history.length
-          ).then(result => {
-            if (result) {
-              console.log(result);
-
-              Sessions.createSession(req, res, ip, docs.hash_id);
-
-              var loginResponse = {
-                error: false,
-                error_code: 0,
-                message: "Login successful",
-                user: {
-                  user_id: "1",
-                  hash_id: docs.hash_id,
-                  email: docs.email
-                }
+          IpGeolocation.geoLocate(ip)
+            .then(response => {
+              var country = {
+                iso_code: "",
+                capital: "",
+                name: ""
               };
-              res.status(200).json(loginResponse);
-              return;
-            } else {
+
+              if (response.data.geo) {
+                if (response.data.geo["country-iso-code"] != null) {
+                  country.iso_code = response.data.geo["country-iso-code"];
+                }
+                if (response.data.geo.capital != null) {
+                  country.capital = response.data.geo.capital;
+                }
+                if (response.data.geo["country-name"] != null) {
+                  country.name = response.data.geo["country-name"];
+                }
+              }
+
+              var location =
+                country.iso_code +
+                " - " +
+                country.capital +
+                ", " +
+                country.name;
+
+              Users.updateLoginHistory(
+                email,
+                ip,
+                location,
+                device,
+                req.useragent.os,
+                new Date(),
+                login_history_length
+              ).then(result => {
+                if (result) {
+                  console.log(result);
+
+                  Sessions.createSession(req, res, ip, docs.hash_id);
+
+                  var loginResponse = {
+                    error: false,
+                    error_code: 0,
+                    message: "Login successful",
+                    user: {
+                      user_id: "1",
+                      hash_id: docs.hash_id,
+                      email: docs.email
+                    }
+                  };
+                  res.status(200).json(loginResponse);
+                  return;
+                } else {
+                  res
+                    .status(400)
+                    .json(ApiResponse.getFailure(0, "Login failure"));
+                  return;
+                }
+              });
+            })
+            .catch(err => {
               res
                 .status(400)
-                .json(ApiResponse.getFailure(0, "Login failure"));
-                return;
-            }
-          });
+                .json(ApiResponse.getFailure(0, "Error logging in"));
+              console.log(err);
+            });
         } else {
           res
             .status(400)
             .json(ApiResponse.getFailure(0, "Invalid password provided"));
-            return;
+          return;
         }
       })
       .catch(err => {
+        res.status(400).json(ApiResponse.getFailure(0, "Error logging in"));
         console.log(err);
       });
   })

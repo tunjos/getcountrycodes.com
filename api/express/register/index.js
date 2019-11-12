@@ -77,7 +77,7 @@ app.post(
           collectionUser.insertOne({
             user_id: 1,
             hash_id: "ABC",
-            active: false,
+            active: true,
             verified: false,
             permission_level: 1,
             api_key: api_key,
