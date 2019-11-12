@@ -70,7 +70,7 @@ app.post(
 
           const verify_token = crypto.randomBytes(32).toString("hex");
           const verify_token_expiry = new Date().setDate(
-            new Date().getDate() + 1
+            new Date().getDate() + 5
           );
 
           // Store and give success message
