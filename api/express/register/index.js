@@ -81,7 +81,7 @@ app.post(
             verified: false,
             permission_level: 1,
             api_key: api_key,
-            email: email,
+            email: email.toLowerCase(),
             password: passwordHash,
             salt: salt,
             verify_token: verify_token,
