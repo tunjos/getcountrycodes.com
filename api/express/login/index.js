@@ -95,7 +95,7 @@ app.post(
             .then(response => {
               var country = {
                 iso_code: "",
-                capital: "",
+                city: "",
                 name: ""
               };
 
@@ -103,8 +103,8 @@ app.post(
                 if (response.data.geo["country-iso-code"] != null) {
                   country.iso_code = response.data.geo["country-iso-code"];
                 }
-                if (response.data.geo.capital != null) {
-                  country.capital = response.data.geo.capital;
+                if (response.data.geo.city != null) {
+                  country.city = response.data.geo.city;
                 }
                 if (response.data.geo["country-name"] != null) {
                   country.name = response.data.geo["country-name"];
@@ -114,7 +114,7 @@ app.post(
               var location =
                 country.iso_code +
                 " - " +
-                country.capital +
+                country.city +
                 ", " +
                 country.name;
 
