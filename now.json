@@ -15,13 +15,15 @@
         { "src": "www/public/gcc/package.json", "use": "@now/static-build" },
         { "src": "www/public/gcc/dist/**", "use": "@now/static" },
         { "src": "api/go/*.go", "use": "@now/go" },
-        { "src": "api/express/**/*.js", "use": "@now/node@canary" }
+        { "src": "api/express/**/*.js", "use": "@now/node@1.0.1" }
     ],
     "routes": [
         { "src": "/api/login", "methods": ["POST"], "dest": "/api/express/login/index.js" },
         { "src": "/api/login/", "methods": ["POST"], "dest": "/api/express/login/index.js" },
         { "src": "/api/register", "methods": ["POST"], "dest": "/api/express/register/index.js" },
         { "src": "/api/register/", "methods": ["POST"], "dest": "/api/express/register/index.js" },
+        { "src": "/api/verify", "methods": ["POST"], "dest": "/api/express/verify/index.js" },
+        { "src": "/api/verify/", "methods": ["POST"], "dest": "/api/express/verify/index.js" },
         { "src": "/api/countries", "methods": ["GET"], "dest": "/api/express/index.js" },
         { "src": "/api/countries/(.*)", "methods": ["GET"], "dest": "/api/express/index.js" },
         { "src": "/api/(.*)", "methods": ["GET"], "dest": "/api/$1" },
