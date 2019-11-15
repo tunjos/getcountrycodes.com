@@ -128,8 +128,6 @@ app.post(
                 login_history_length
               ).then(result => {
                 if (result) {
-                  console.log(result);
-
                   Sessions.createSession(req, res, ip, docs.hash_id);
 
                   var loginResponse = {
@@ -137,7 +135,7 @@ app.post(
                     error_code: 0,
                     message: "Login successful",
                     user: {
-                      user_id: "1",
+                      user_id: docs.user_id,
                       hash_id: docs.hash_id,
                       email: docs.email
                     }

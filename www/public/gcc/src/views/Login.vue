@@ -34,7 +34,7 @@
 <script>
 // @ is an alias to /src
 import HelloWorld from "@/components/HelloWorld.vue";
-import { GccApi } from "../common/GccApi";
+import { GccApi } from "@/common/GccApi";
 
 export default {
   name: "login",
@@ -47,15 +47,6 @@ export default {
     password: null
   }),
   methods: {
-    startProgressBar() {
-      this.$Progress.start();
-    },
-    finishProgressBar() {
-      this.$Progress.finish();
-    },
-    failProgressBar() {
-      this.$Progress.fail();
-    },
     validateLogin: function(e) {
       this.errors = [];
       e.preventDefault();
