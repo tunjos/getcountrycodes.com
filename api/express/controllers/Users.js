@@ -129,8 +129,50 @@ async function updateLoginHistory(
   return false;
 }
 
-function createUser(email) {
-  return false;
+async function createUser(email, password) {
+  const db = await MongoDB.connectToDatabase();
+
+  const userCollection = db.collection(Collections.Users);
+
+  // Extract to CryptoUtils
+  const salt = crypto.randomBytes(16).toString("hex");
+  const passwordHash = crypto
+    .pbkdf2Sync(password, salt, 10000, 32, "sha512")
+    .toString("hex");
+
+  const api_key =
+    "gcc_" +
+    crypto
+      .randomBytes(24)
+      .toString("base64")
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_");
+
+  const verify_token = crypto.randomBytes(32).toString("hex");
+  const verify_token_expiry = new Date().setDate(new Date().getDate() + 5);
+
+  var user = {
+    user_id: 1,
+    hash_id: "ABC",
+    active: true,
+    verified: false,
+    permission_level: 1,
+    api_key: api_key,
+    email: email.toLowerCase(),
+    password: passwordHash,
+    salt: salt,
+    verify_token: verify_token,
+    verify_token_expiry: verify_token_expiry
+  };
+
+  try {
+    var result = await userCollection.insertOne(user);
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+
+  return user;
 }
 
 module.exports = {
