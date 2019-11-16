@@ -129,7 +129,7 @@ async function updateLoginHistory(
   return false;
 }
 
-async function createUser(email, password) {
+async function createUser(firstname, surname, email, password) {
   const db = await MongoDB.connectToDatabase();
 
   const userCollection = db.collection(Collections.Users);
@@ -154,6 +154,8 @@ async function createUser(email, password) {
   var user = {
     user_id: 1,
     hash_id: "ABC",
+    firstname: firstname,
+    surname: surname,
     active: true,
     verified: false,
     permission_level: 1,

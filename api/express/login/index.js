@@ -83,65 +83,58 @@ app.post("*", (req, res) => {
           login_history_length = docs.login_history.length;
         }
 
-        IpGeolocation.geoLocate(ip)
-          .then(response => {
-            var country = {
-              iso_code: "",
-              city: "",
-              name: ""
-            };
+        IpGeolocation.geoLocate(ip).then(response => {
+          var country = {
+            iso_code: "",
+            city: "",
+            name: ""
+          };
 
-            if (response.data.geo) {
-              if (response.data.geo["country-iso-code"] != null) {
-                country.iso_code = response.data.geo["country-iso-code"];
-              }
-              if (response.data.geo.city != null) {
-                country.city = response.data.geo.city;
-              }
-              if (response.data.geo["country-name"] != null) {
-                country.name = response.data.geo["country-name"];
-              }
+          if (response && response.data.geo) {
+            if (response.data.geo["country-iso-code"] != null) {
+              country.iso_code = response.data.geo["country-iso-code"];
             }
+            if (response.data.geo.city != null) {
+              country.city = response.data.geo.city;
+            }
+            if (response.data.geo["country-name"] != null) {
+              country.name = response.data.geo["country-name"];
+            }
+          }
 
-            var location =
-              country.iso_code + " - " + country.city + ", " + country.name;
+          var location =
+            country.iso_code + " - " + country.city + ", " + country.name;
 
-            Users.updateLoginHistory(
-              email,
-              ip,
-              location,
-              device,
-              req.useragent.os,
-              new Date(),
-              login_history_length
-            ).then(result => {
-              if (result) {
-                Sessions.createSession(req, res, ip, docs.hash_id);
+          Users.updateLoginHistory(
+            email,
+            ip,
+            location,
+            device,
+            req.useragent.os,
+            new Date(),
+            login_history_length
+          ).then(result => {
+            if (result) {
+              Sessions.createSession(req, res, ip, docs.hash_id);
 
-                var loginResponse = {
-                  error: false,
-                  error_code: 0,
-                  message: "Login successful",
-                  user: {
-                    user_id: docs.user_id,
-                    hash_id: docs.hash_id,
-                    email: docs.email
-                  }
-                };
-                res.status(200).json(loginResponse);
-                return;
-              } else {
-                res
-                  .status(400)
-                  .json(ApiResponse.getFailure(0, "Login failure"));
-                return;
-              }
-            });
-          })
-          .catch(err => {
-            res.status(400).json(ApiResponse.getFailure(0, "Error logging in"));
-            console.log(err);
+              var loginResponse = {
+                error: false,
+                error_code: 0,
+                message: "Login successful",
+                user: {
+                  user_id: docs.user_id,
+                  hash_id: docs.hash_id,
+                  email: docs.email
+                }
+              };
+              res.status(200).json(loginResponse);
+              return;
+            } else {
+              res.status(400).json(ApiResponse.getFailure(0, "Login failure"));
+              return;
+            }
           });
+        });
       } else {
         res
           .status(400)

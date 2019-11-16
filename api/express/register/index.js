@@ -26,8 +26,15 @@ app.use(
 app.use(useragent.express());
 
 app.post("*", (req, res) => {
+  var firstname = req.body.firstname;
+  var surname = req.body.surname;
   var email = req.body.email;
   var password = req.body.password;
+
+  if (!Validators.isValuePresent(firstname)) {
+    res.status(400).json(ApiResponse.getFailure(0, "First Name not provided"));
+    return;
+  }
 
   if (!Validators.isValuePresent(email)) {
     res.status(400).json(ApiResponse.getFailure(0, "Email not provided"));
@@ -53,7 +60,7 @@ app.post("*", (req, res) => {
           .status(400)
           .json(ApiResponse.getFailure(0, "Email already registered"));
       } else {
-        Users.createUser(email, password).then(result => {
+        Users.createUser(firstname, surname, email, password).then(result => {
           if (result) {
             // Todo email verify_token
             res
