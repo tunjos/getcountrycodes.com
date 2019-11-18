@@ -9,7 +9,7 @@ async function findUserLogin(email) {
   const collectionUser = db.collection(Collections.Users);
   return collectionUser.findOne(
     {
-      email: email
+      email: email.toLowerCase()
     },
     {
       projection: {
