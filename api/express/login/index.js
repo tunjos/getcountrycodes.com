@@ -75,6 +75,11 @@ app.post("*", (req, res) => {
         return;
       }
 
+      if (!docs.verified) {
+        res.status(400).json(ApiResponse.getFailure(0, "Account not verified"));
+        return;
+      }
+
       if (Users.validatePassword(password, docs.salt, docs.password)) {
         var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
         var device = req.useragent.browser + " - " + req.useragent.platform;
