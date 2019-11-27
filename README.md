@@ -19,7 +19,7 @@ Check out the live [documentation](https://getcountrycodes.com/docs)
 #### 1. Install [now](https://zeit.co/home)
 
 ```bash
-npm install now@15.8.3
+npm install -g now@15.8.3
 ```
 #### 2. Create a `.env` file and add the corresponding values from [.env.example](.env.example)
 
