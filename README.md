@@ -21,13 +21,44 @@ Check out the live [documentation](https://getcountrycodes.com/docs)
 ```bash
 npm install -g now@15.8.3
 ```
-#### 2. Create a `.env` file and add the corresponding values from [.env.example](.env.example)
+
+#### 2. Install [MongoDB](https://www.mongodb.com/)
+Follow this guide https://learn.tunjos.co/mongodb/install/ to install **MongoDB** locally
+
+#### 3. Create an admin user and a normal app user
+
+Create create an **admin** user with "**root**" or "**userAdminAnyDatabase**" role on the **admin** database and a **normal** app user with "**readWrite**" role on the **GetCountryCodes** database.
+
+```bash
+mongod
+```
+```
+db.createUser(
+  {
+    user: "<admin_username>",
+    pwd: passwordPrompt(),
+    roles: [ { role: "root", db: "admin" }]
+  }
+)
+```
+
+```
+db.createUser(
+  {
+    user: "<app_username>",
+    pwd: passwordPrompt(),
+    roles: [ { role: "readWrite", db: "GetCountryCodes" }]
+  }
+)
+```
+
+#### 4. Create a `.env` file and add the corresponding values from [.env.example](.env.example)
 
 ```bash
 cp .env.example .env
 nano .env
 ```
-#### 3. Install the required dependencies
+#### 5. Install the required dependencies
 
 ```bash
 cd api/express
@@ -38,7 +69,12 @@ cd www/public/gcc
 npm install
 ```
 
-#### 4. Run the local server in development mode
+#### 6. Start **MongoDB** locally.
+```bash
+sudo service mongod start
+```
+
+#### 7. Run the local server in development mode
 ```bash
 now dev
 ```
@@ -116,7 +152,7 @@ now dev
 
 ### Available Endpoints
 - `/countries`
-- `/countries/country`
+- `/countries/:country`
 - `/register`
 - `/login`
 - `/logout`
