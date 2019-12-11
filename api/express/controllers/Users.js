@@ -24,6 +24,22 @@ async function findUserLogin(email) {
   );
 }
 
+async function findUserApiKey(apiKey) {
+  const db = await MongoDB.connectToDatabase();
+
+  const userCollection = db.collection(Collections.Users);
+  return userCollection.findOne({api_key: apiKey},
+  {
+    projection: {
+      hash_id: 1,
+      active: 1,
+      verified: 1,
+      email: 1,
+      "usage.total": 1
+    }
+  })
+}
+
 function validatePassword(password, salt, passwordHash) {
   const passwordHashComputed = crypto
     .pbkdf2Sync(password, salt, 10000, 32, "sha512")
@@ -179,6 +195,7 @@ async function createUser(firstname, surname, email, password) {
 
 module.exports = {
   findUserLogin: findUserLogin,
+  findUserApiKey: findUserApiKey,
   validatePassword: validatePassword,
   findVerifyToken: findVerifyToken,
   verifyAccount: verifyAccount,

@@ -31,16 +31,28 @@ function isValidPassword(password) {
   return true;
 }
 
-function isAuthTokenPresent(req) {
-  var authorizationHeader = req.header("Authorization");
-
+function isAuthorizationHeaderPresent(authorizationHeader) {
   if (!isValuePresent(authorizationHeader)) {
     return false;
   }
 
-  if (!authorizationHeader.includes("Bearer")) {
+  return true
+}
+
+function isAPIKeyPresent(authorizationHeader) {
+
+  var bearer = authorizationHeader.substring(0, 8);
+  if (bearer !=  "Bearer: ") {
     return false;
   }
+
+  var apiKey = authorizationHeader.substring(8, 44);
+
+  if (apiKey.length != 36) {
+    return false;
+  }
+
+  return true
 }
 
 function isValidVerifyToken(token) {
@@ -59,6 +71,7 @@ module.exports = {
   isValuePresent: isValuePresent,
   isValidEmail: isValidEmail,
   isValidPassword: isValidPassword,
-  isAuthTokenPresent: isAuthTokenPresent,
+  isAPIKeyPresent: isAPIKeyPresent,
+  isAuthorizationHeaderPresent: isAuthorizationHeaderPresent,
   isValidVerifyToken: isValidVerifyToken
 };
