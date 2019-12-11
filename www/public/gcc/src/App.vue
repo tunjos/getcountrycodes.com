@@ -1,15 +1,22 @@
 <template>
   <div id="app">
     <vue-progress-bar></vue-progress-bar>
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/login">Login</router-link> |
-      <router-link to="/register">Register</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    <NavigationBar msg="Welcome to Your Vue.js App" />
     <router-view />
   </div>
 </template>
+
+<script>
+// @ is an alias to /src
+import NavigationBar from "@/components/NavigationBar.vue";
+
+export default {
+  name: "app",
+  components: {
+    NavigationBar
+  }
+};
+</script>
 
 <style>
 #app {
