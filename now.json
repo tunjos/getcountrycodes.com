@@ -24,6 +24,8 @@
         { "src": "/api/login/", "methods": ["POST"], "dest": "/api/express/login/index.js" },
         { "src": "/api/register", "methods": ["POST"], "dest": "/api/express/register/index.js" },
         { "src": "/api/register/", "methods": ["POST"], "dest": "/api/express/register/index.js" },
+        { "src": "/api/logout", "methods": ["GET"], "dest": "/api/express/logout/index.js" },
+        { "src": "/api/logout/", "methods": ["GET"], "dest": "/api/express/logout/index.js" },
         { "src": "/api/verify", "methods": ["POST"], "dest": "/api/express/verify/index.js" },
         { "src": "/api/verify/", "methods": ["POST"], "dest": "/api/express/verify/index.js" },
         { "src": "/api/countries", "methods": ["GET"], "dest": "/api/express/index.js" },

@@ -8,6 +8,10 @@ GccApi.login = params => {
   return GccApi.post("/api/login", params);
 };
 
+GccApi.logout = params => {
+  return GccApi.get("/api/logout", params);
+};
+
 GccApi.register = params => {
   return GccApi.post("/api/register", params);
 };
